@@ -1,0 +1,34 @@
+#version 330 core
+
+// input vertex, UV coordinates and normal
+layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 1) in vec3 vertexNormal_modelspace;
+layout(location = 2) in vec2 vertexUV;
+
+out vec2 UV;
+uniform mat4 M;
+uniform mat4 T;
+uniform mat4 R;
+uniform mat4 S;
+uniform mat4 V;
+uniform mat4 P;
+
+// model view projection matrix 
+uniform mat4 MVP;
+
+void main() {
+    // vertex position
+
+    UV = vertexUV;
+
+    gl_Position =  P * V * T * R * S * vec4(vertexPosition_modelspace, 1);
+
+    //*/
+    gl_Position =  P * V * M * vec4(vertexPosition_modelspace, 1);
+    //*/
+
+	////MODEL STUFF
+	// assign vertex position
+    vec4 coordinates_modelspace = vec4(vertexPosition_modelspace, 1.0);
+	gl_Position = MVP * coordinates_modelspace;
+}
