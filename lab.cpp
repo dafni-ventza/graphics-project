@@ -62,8 +62,8 @@ GLuint translationMatrixLocation, rotationMatrixLocation, scaleMatrixLocation;
 GLuint sceneTexture, waterSampler, waterTexture, sceneSampler;
 
 //Terrain stuff
-Skydome g_SkyDome;
-Terrain g_Terrain(30, 2);
+//Skydome g_SkyDome;
+//Terrain g_Terrain(30, 2);
 
 particleAttributes particle;
 
@@ -103,7 +103,7 @@ void renderScene() {
 	mat4 projectionMatrix = camera->projectionMatrix;
 	mat4 viewMatrix = camera->viewMatrix;
 
-	auto* scene = new Drawable("TerrainScenes/Small_Tropical_Island/Small_Tropical_Island.obj");
+	auto* scene = new Drawable("TerrainScenes/mountain/mount.blend1.obj");
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, sceneTexture);
@@ -125,68 +125,68 @@ void renderScene() {
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	scene->draw();
-	
-	
+
+
 
 }
 
 void renderHelpingWindow() {
-    static int counter = 0;
+	static int counter = 0;
 
-    ImGui::Begin("Helper Window");                          // Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("Helper Window");                          // Create a window called "Hello, world!" and append into it.
 
-    ImGui::Text("Use arrow keys for zoom in/out and A,W,S,D for moving around world space. Press ESC for exit.\n");               // Display some text (you can use a format strings too)
+	ImGui::Text("Use arrow keys for zoom in/out and A,W,S,D for moving around world space. Press ESC for exit.\n");               // Display some text (you can use a format strings too)
 
-    ImGui::ColorEdit3("Background", &background_color[0]);
+	ImGui::ColorEdit3("Background", &background_color[0]);
 
-    ImGui::SliderFloat("x position", &slider_emitter_pos[0], -30.0f, 30.0f);
-    ImGui::SliderFloat("y position", &slider_emitter_pos[1], -30.0f, 30.0f);
-    ImGui::SliderFloat("z position", &slider_emitter_pos[2], -30.0f, 30.0f);
+	ImGui::SliderFloat("x position", &slider_emitter_pos[0], -30.0f, 30.0f);
+	ImGui::SliderFloat("y position", &slider_emitter_pos[1], -30.0f, 30.0f);
+	ImGui::SliderFloat("z position", &slider_emitter_pos[2], -30.0f, 30.0f);
 	ImGui::SliderFloat("height", &height_threshold, 0, 500);
 
-    ImGui::SliderInt("particles", &particles_slider, 0, 20000);
+	ImGui::SliderInt("particles", &particles_slider, 0, 20000);
 
 
-    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
+	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+		counter++;
+	ImGui::SameLine();
+	ImGui::Text("counter = %d", counter);
 
-    ImGui::Checkbox("Use sorting", &use_sorting);
-    ImGui::Checkbox("Use rotations", &use_rotations);
+	ImGui::Checkbox("Use sorting", &use_sorting);
+	ImGui::Checkbox("Use rotations", &use_rotations);
 
-    ImGui::Text("Performance %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::End();
- 
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	ImGui::Text("Performance %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::End();
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }
 
 void createContext() {
-    particleShaderProgram = loadShaders(
-        "ParticleShader.vertexshader",
-        "ParticleShader.fragmentshader");
+	particleShaderProgram = loadShaders(
+		"ParticleShader.vertexshader",
+		"ParticleShader.fragmentshader");
 
-    normalShaderProgram = loadShaders(
-        "StandardShading.vertexshader",
-        "StandardShading.fragmentshader");
+	normalShaderProgram = loadShaders(
+		"StandardShading.vertexshader",
+		"StandardShading.fragmentshader");
 
 	//TO DO - separate shader for the scene to be loaded
 	/*terrainShaderProgram = loadShaders(
 		"TerrainShading.vertexshader",
 		"TerrainShading.fragmentshader");*/
 
-    projectionAndViewMatrix = glGetUniformLocation(particleShaderProgram, "PV");
+	projectionAndViewMatrix = glGetUniformLocation(particleShaderProgram, "PV");
 
-    translationMatrixLocation = glGetUniformLocation(normalShaderProgram, "T");
-    rotationMatrixLocation = glGetUniformLocation(normalShaderProgram, "R");
-    scaleMatrixLocation = glGetUniformLocation(normalShaderProgram, "S");
+	translationMatrixLocation = glGetUniformLocation(normalShaderProgram, "T");
+	rotationMatrixLocation = glGetUniformLocation(normalShaderProgram, "R");
+	scaleMatrixLocation = glGetUniformLocation(normalShaderProgram, "S");
 
-    modelMatrixLocation = glGetUniformLocation(normalShaderProgram, "M");
+	modelMatrixLocation = glGetUniformLocation(normalShaderProgram, "M");
 
-    viewMatrixLocation = glGetUniformLocation(normalShaderProgram, "V");
-    projectionMatrixLocation = glGetUniformLocation(normalShaderProgram, "P");
+	viewMatrixLocation = glGetUniformLocation(normalShaderProgram, "V");
+	projectionMatrixLocation = glGetUniformLocation(normalShaderProgram, "P");
 
 
 	// Draw wire frame triangles or fill: GL_LINE, or GL_FILL
@@ -199,19 +199,19 @@ void createContext() {
 
 
 
-    waterSampler = glGetUniformLocation(particleShaderProgram, "texture0");
+	waterSampler = glGetUniformLocation(particleShaderProgram, "texture0");
 	//Attribution for water texture: <a href='https://www.freepik.com/photos/water'>Water photo created by rawpixel.com - www.freepik.com</a>
 	waterTexture = loadSOIL("blue.jpg");
 	waterSampler = glGetUniformLocation(particleShaderProgram, "texture0");
 
-	
-	sceneSampler = glGetUniformLocation(normalShaderProgram, "texture1");
-    sceneTexture = loadSOIL("TerrainScenes/Small_Tropical_Island/Maps/rc1.jpg");
-	
 
-	loadOBJWithTiny("TerrainScenes/Small_Tropical_Island/Small_Tropical_Island.obj", 
-		modelVertices, 
-		modelUVs, 
+	sceneSampler = glGetUniformLocation(normalShaderProgram, "texture1");
+	sceneTexture = loadSOIL("TerrainScenes/mountain/ground_grass_3264_4062_Small.jpg");
+
+
+	loadOBJWithTiny("TerrainScenes/mountain/mount.blend1.obj",
+		modelVertices,
+		modelUVs,
 		modelNormals);
 	glGenVertexArrays(1, &modelVAO);
 	glBindVertexArray(modelVAO);
@@ -221,30 +221,30 @@ void createContext() {
 		&modelVertices[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(0);
-	
-    glfwSetKeyCallback(window, pollKeyboard);
 
-	
+	glfwSetKeyCallback(window, pollKeyboard);
+
+
 }
 
 void free() {
-    glDeleteProgram(particleShaderProgram);
+	glDeleteProgram(particleShaderProgram);
 	glDeleteProgram(normalShaderProgram);
-    glfwTerminate();
+	glfwTerminate();
 }
 
 void mainLoop() {
-    
-	
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
 
-	
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
+
+
 
 	////Terrain stuff
 	//g_SkyDome.Init();
@@ -271,159 +271,159 @@ void mainLoop() {
 	//	std::cerr << "Failed to load terrain texture for texture stage 2!" << std::endl;
 	//}
 
-	
-	
 
-    camera->position = vec3(0, 2, 10);
-	
+
+
+	camera->position = vec3(0, 2, 10);
+
 	//Find a more realistic obj in future
-    auto* quad = new Drawable("earth.obj");
+	auto* quad = new Drawable("earth.obj");
 
-	FountainEmitter f_emitter = FountainEmitter(quad , particles_slider);
-	//OrbitEmitter o_emitter = OrbitEmitter(quad, particles_slider, 0.5f, 1.5f);
+	FountainEmitter f_emitter = FountainEmitter(quad, particles_slider);
+	OrbitEmitter o_emitter = OrbitEmitter(quad, particles_slider, 0.5f, 1.5f);
 
-    float t = glfwGetTime();
-    do {
+	float t = glfwGetTime();
+	do {
 		f_emitter.changeParticleNumber(particles_slider);
 		f_emitter.emitter_pos = slider_emitter_pos;
 		f_emitter.use_rotations = use_rotations;
 		f_emitter.use_sorting = use_sorting;
 		f_emitter.height_threshold = height_threshold;
 
-        float currentTime = glfwGetTime();
-        float dt = currentTime - t;
+		float currentTime = glfwGetTime();
+		float dt = currentTime - t;
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        glClearColor(background_color[0], background_color[1], background_color[2], background_color[3]);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		glClearColor(background_color[0], background_color[1], background_color[2], background_color[3]);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(particleShaderProgram);
+		glUseProgram(particleShaderProgram);
 
-        // camera
-        camera->update();
-        mat4 projectionMatrix = camera->projectionMatrix;
-        mat4 viewMatrix = camera->viewMatrix;
+		// camera
+		camera->update();
+		mat4 projectionMatrix = camera->projectionMatrix;
+		mat4 viewMatrix = camera->viewMatrix;
 
-        auto PV = projectionMatrix * viewMatrix;
-        glUniformMatrix4fv(projectionAndViewMatrix, 1, GL_FALSE, &PV[0][0]);
+		auto PV = projectionMatrix * viewMatrix;
+		glUniformMatrix4fv(projectionAndViewMatrix, 1, GL_FALSE, &PV[0][0]);
 
-        //*/ Use particle based drawing
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, waterTexture);
-        glUniform1i(waterSampler, 0);
-        if(!game_paused) {
-            f_emitter.updateParticles(currentTime, dt, camera->position);
-			//o_emitter.updateParticles(currentTime, dt, camera->position);
+		//*/ Use particle based drawing
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, waterTexture);
+		glUniform1i(waterSampler, 0);
+		if (!game_paused) {
+			f_emitter.updateParticles(currentTime, dt, camera->position);
+			o_emitter.updateParticles(currentTime, dt, camera->position);
 		}
 
 		//Particles draw
 		f_emitter.renderParticles();
-		//o_emitter.renderParticles();
+		o_emitter.renderParticles();
 
-        //*/
-        
-        
-        /*// Use standard drawing procedure
-        glUseProgram(normalShaderProgram);
-        monkey->bind();
-        glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-        glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-        for (int i = 0; i < particles_slider; i++) {
-            auto p = f_emitter.p_attributes[i];
-            //auto modelMatrix = glm::scale(mat4(1.0f), vec3(4.0f, 4.0f, 4.0f));
-            auto r = glm::rotate(glm::mat4(), 1.0f, glm::vec3(1,1,0));
-            auto s = glm::scale(glm::mat4(), glm::vec3(1,1,1));
-            auto t = glm::translate(glm::mat4(), glm::vec3(RAND*30-60, RAND * 30 - 60, RAND * 30 - 60));
-            
-            glUniformMatrix4fv(translationMatrixLocation, 1, GL_FALSE, &t[0][0]);
-            glUniformMatrix4fv(rotationMatrixLocation, 1, GL_FALSE, &r[0][0]);
-            glUniformMatrix4fv(scaleMatrixLocation, 1, GL_FALSE, &s[0][0]);
-                        
-            auto modelMatrix = t * r * s;
-            glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
-            
-            monkey->draw();
-        }
-        //*/
+		//*/
 
-		
-		renderScene();
+
+		/*// Use standard drawing procedure
+		glUseProgram(normalShaderProgram);
+		monkey->bind();
+		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
+		for (int i = 0; i < particles_slider; i++) {
+			auto p = f_emitter.p_attributes[i];
+			//auto modelMatrix = glm::scale(mat4(1.0f), vec3(4.0f, 4.0f, 4.0f));
+			auto r = glm::rotate(glm::mat4(), 1.0f, glm::vec3(1,1,0));
+			auto s = glm::scale(glm::mat4(), glm::vec3(1,1,1));
+			auto t = glm::translate(glm::mat4(), glm::vec3(RAND*30-60, RAND * 30 - 60, RAND * 30 - 60));
+
+			glUniformMatrix4fv(translationMatrixLocation, 1, GL_FALSE, &t[0][0]);
+			glUniformMatrix4fv(rotationMatrixLocation, 1, GL_FALSE, &r[0][0]);
+			glUniformMatrix4fv(scaleMatrixLocation, 1, GL_FALSE, &s[0][0]);
+
+			auto modelMatrix = t * r * s;
+			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
+
+			monkey->draw();
+		}
+		//*/
+
+
+		//renderScene();
 
 		//displayGL();
 
 		//Model
-		glBindVertexArray(modelVAO);
+		/*glBindVertexArray(modelVAO);
 		mat4 modelModelMatrix = mat4(1);
 		mat4 modelMVP = projectionMatrix * viewMatrix * modelModelMatrix;
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, &modelMVP[0][0]);
 		glUniformMatrix4fv(MLocation, 1, GL_FALSE, &modelModelMatrix[0][0]);
-		glDrawArrays(GL_TRIANGLES, 0, modelVertices.size());
+		glDrawArrays(GL_TRIANGLES, 0, modelVertices.size());*/
 
 
 
 
-        renderHelpingWindow();
-        glfwPollEvents();
-        glfwSwapBuffers(window);
-        t = currentTime;
+		renderHelpingWindow();
+		glfwPollEvents();
+		glfwSwapBuffers(window);
+		t = currentTime;
 
-    } while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-             glfwWindowShouldClose(window) == 0);
+	} while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+		glfwWindowShouldClose(window) == 0);
 
-	
+
 }
 
 void initialize() {
-    // Initialize GLFW
-    if (!glfwInit()) {
-        throw runtime_error("Failed to initialize GLFW\n");
-    }
+	// Initialize GLFW
+	if (!glfwInit()) {
+		throw runtime_error("Failed to initialize GLFW\n");
+	}
 
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Open a window and create its OpenGL context
-    window = glfwCreateWindow(W_WIDTH, W_HEIGHT, TITLE, NULL, NULL);
-    if (window == NULL) {
-        glfwTerminate();
-        throw runtime_error(string(string("Failed to open GLFW window.") +
-                            " If you have an Intel GPU, they are not 3.3 compatible." +
-                            "Try the 2.1 version.\n"));
-    }
+	// Open a window and create its OpenGL context
+	window = glfwCreateWindow(W_WIDTH, W_HEIGHT, TITLE, NULL, NULL);
+	if (window == NULL) {
+		glfwTerminate();
+		throw runtime_error(string(string("Failed to open GLFW window.") +
+			" If you have an Intel GPU, they are not 3.3 compatible." +
+			"Try the 2.1 version.\n"));
+	}
 
-    glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(window);
 
-    // Start GLEW extension handler
-    glewExperimental = GL_TRUE;
+	// Start GLEW extension handler
+	glewExperimental = GL_TRUE;
 
-    // Initialize GLEW
-    if (glewInit() != GLEW_OK) {
-        glfwTerminate();
-        throw runtime_error("Failed to initialize GLEW\n");
-    }
+	// Initialize GLEW
+	if (glewInit() != GLEW_OK) {
+		glfwTerminate();
+		throw runtime_error("Failed to initialize GLEW\n");
+	}
 
-    // Ensure we can capture the escape key being pressed below
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+	// Ensure we can capture the escape key being pressed below
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    // Hide the mouse and enable unlimited movement
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	// Hide the mouse and enable unlimited movement
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // Set the mouse at the center of the screen
-    glfwPollEvents();
-    glfwSetCursorPos(window, W_WIDTH / 2, W_HEIGHT / 2);
+	// Set the mouse at the center of the screen
+	glfwPollEvents();
+	glfwSetCursorPos(window, W_WIDTH / 2, W_HEIGHT / 2);
 
-    // Gray background color
-    glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+	// Gray background color
+	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
-    // Enable depth test
-    glEnable(GL_DEPTH_TEST);
-    // Accept fragment if it closer to the camera than the former one
-    glDepthFunc(GL_LESS);
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
 
 	//Terrain stuff until glColorMaterial
 	glShadeModel(GL_SMOOTH);
@@ -443,30 +443,30 @@ void initialize() {
 
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
-    // Cull triangles which normal is not towards the camera
-     /*glEnable(GL_CULL_FACE);
-     glFrontFace(GL_CW);
-     glFrontFace(GL_CCW);*/
+	// Cull triangles which normal is not towards the camera
+	 /*glEnable(GL_CULL_FACE);
+	 glFrontFace(GL_CW);
+	 glFrontFace(GL_CCW);*/
 
-    // enable point size when drawing points
-    glEnable(GL_PROGRAM_POINT_SIZE);
+	 // enable point size when drawing points
+	glEnable(GL_PROGRAM_POINT_SIZE);
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Log
-    logGLParameters();
+	// Log
+	logGLParameters();
 
-    // Create camera
-    camera = new Camera(window);
+	// Create camera
+	camera = new Camera(window);
 
-    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
-                                 camera->onMouseMove(xpos, ypos);
-                             }
-    );
+	glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
+		camera->onMouseMove(xpos, ypos);
+		}
+	);
 
-	
-	
+
+
 
 }
 
@@ -479,7 +479,7 @@ void pollKeyboard(GLFWwindow* window, int key, int scancode, int action, int mod
 	//Less droplets - L
 	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
 		particles_slider--;
-		particle.position--;		
+		particle.position--;
 	}
 	//More droplets - M
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
@@ -529,22 +529,23 @@ void pollKeyboard(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 int main(void) {
-    try {
-        initialize();
-        createContext();
+	try {
+		initialize();
+		createContext();
 
-		
 
-        mainLoop();
-        free();
-    } catch (exception& ex) {
-        cout << ex.what() << endl;
-        getchar();
-        free();
-        return -1;
-    }
 
-    return 0;
+		mainLoop();
+		free();
+	}
+	catch (exception& ex) {
+		cout << ex.what() << endl;
+		getchar();
+		free();
+		return -1;
+	}
+
+	return 0;
 }
 
 //Terrain additions
@@ -584,9 +585,9 @@ void DrawAxis(float fScale, glm::vec3 translate = glm::vec3(0))
 void windXManipulation() {
 	particle.factorXWind += particle.factorXWind * 5.1f;
 
-	particle.velocity = glm::vec3(5 - RAND*particle.factorXWind,
+	particle.velocity = glm::vec3(5 - RAND * particle.factorXWind,
 		-particle.speedYDroplet,
-		5 - RAND*particle.factorZWind)*particle.speedDropFall;
+		5 - RAND * particle.factorZWind) * particle.speedDropFall;
 
 	/*std::cout << particle.velocity << std::endl;*/
 	std::cout << "Velocity - I: " << glm::to_string(particle.velocity) << std::endl;
@@ -620,13 +621,13 @@ void displayGL()
 	glLoadIdentity();
 
 	cout << "DisplayGL - RenderTerrain";
-	
-	g_SkyDome.Render();
+
+	//g_SkyDome.Render();
 
 	//DrawAxis( 20.0f, g_Camera.GetPivot() );
 
 	glLightfv(GL_LIGHT0, GL_POSITION, g_LighDir);
-	g_Terrain.Render();
+	//g_Terrain.Render();
 
 	glfwSwapBuffers(window);
 	//glutSwapBuffers();
