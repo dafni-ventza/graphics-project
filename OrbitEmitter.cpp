@@ -33,4 +33,5 @@ void OrbitEmitter::createNewParticle(int index) {
 	particle.rot_axis = glm::normalize(glm::vec3(1 - 2 * RAND, 1 - 2 * RAND, 1 - 2 * RAND));
 	particle.mass = RAND + 0.5f;
 	particle.life = 1.0f; //mark it alive
+	
 }
